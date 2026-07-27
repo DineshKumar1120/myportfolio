@@ -1,9 +1,12 @@
 import axios from 'axios';
 import { PublicPortfolioData } from '../types';
 
-// const API_BASE_URL = 'http://localhost:5001/api';
-
-const API_BASE_URL = 'https://portfolio-backend-xxxx.onrender.com/api';
+// Dynamic API URL detection: Uses local backend on localhost, or environment / cloud URL in production
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL ||
+  (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? 'http://localhost:5001/api'
+    : 'http://localhost:5001/api');
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -13,13 +16,16 @@ const api = axios.create({
 });
 
 // Interceptor to attach Authorization JWT token automatically
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('portfolio_admin_token');
-  if (token && config.headers) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-}, (error) => Promise.reject(error));
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('portfolio_admin_token');
+    if (token && config.headers) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
 export const fetchPublicPortfolioData = async (): Promise<PublicPortfolioData> => {
   try {
@@ -53,7 +59,7 @@ export const uploadMediaFile = async (file: File): Promise<string> => {
   const formData = new FormData();
   formData.append('file', file);
   const res = await api.post('/upload', formData, {
-    headers: { 'Content-Type': 'multipart/form-data' }
+    headers: { 'Content-Type': 'multipart/form-data' },
   });
   return res.data.fileUrl;
 };
