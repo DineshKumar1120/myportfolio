@@ -30,17 +30,6 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// Storage / memory fallback sync store
-let memoryData = null;
-
-async function getModelData(Model) {
-  try {
-    return await Model.find({}).sort({ sortOrder: 1, createdAt: -1 });
-  } catch (err) {
-    return [];
-  }
-}
-
 // ----------------------------------------------------
 // 1. PUBLIC API ENDPOINTS (No Auth Required)
 // ----------------------------------------------------
@@ -97,7 +86,7 @@ router.get('/public/all', async (req, res) => {
 router.get('/qrcode', async (req, res) => {
   try {
     const settings = await WebsiteSetting.findOne({});
-    const url = (req.query.url) || (settings && settings.portfolioUrl) || 'https://alexrivera.dev';
+    const url = (req.query.url) || (settings && settings.portfolioUrl) || 'https://dineshkumar.dev';
     const qrImage = await QRCode.toDataURL(url, {
       margin: 1,
       color: { dark: '#000000', light: '#ffffff' }
@@ -191,13 +180,21 @@ router.put('/auth/change-password', authMiddleware, async (req, res) => {
 });
 
 // ----------------------------------------------------
-// 3. FILE UPLOADS (Images & Resume PDF)
+// 3. FILE UPLOADS (Images & Resume PDF - Saved directly into Database as DataURIs)
 // ----------------------------------------------------
 router.post('/upload', authMiddleware, upload.single('file'), (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ success: false, message: 'No file uploaded.' });
     }
+
+    // Convert uploaded image to Data URI so it stores directly inside MongoDB database permanently
+    if (req.file.mimetype.startsWith('image/')) {
+      const fileBuffer = fs.readFileSync(req.file.path);
+      const base64Image = `data:${req.file.mimetype};base64,${fileBuffer.toString('base64')}`;
+      return res.json({ success: true, fileUrl: base64Image, filename: req.file.filename });
+    }
+
     const fileUrl = `/uploads/${req.file.filename}`;
     res.json({ success: true, fileUrl, filename: req.file.filename });
   } catch (err) {
