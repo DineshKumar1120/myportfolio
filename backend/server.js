@@ -58,7 +58,11 @@ function startServer(port) {
 }
 
 // Initialize DB and launch server
-connectDB().then(async () => {
-  await seedDefaultData();
+connectDB().then(async (isConnected) => {
+  if (isConnected) {
+    await seedDefaultData();
+  } else {
+    console.warn('[Server] Skipping automatic data seeder because database is not connected.');
+  }
   startServer(PORT);
 });
