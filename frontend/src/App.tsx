@@ -38,7 +38,7 @@ export const AppContent: React.FC = () => {
     return (
       <div className="min-vh-100 d-flex flex-column align-items-center justify-content-center bg-body">
         <div className="spinner-border text-primary mb-3" style={{ width: '3rem', height: '3rem' }} role="status" />
-        <h5 className="fw-bold font-monospace text-primary">Loading Dynamic Portfolio...</h5>
+        <h5 className="fw-bold font-monospace text-primary">Loading Dinesh Portfolio...</h5>
       </div>
     );
   }
