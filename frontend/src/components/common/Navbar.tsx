@@ -38,7 +38,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAdmin }) => {
       }
 
       // Highlight active section on scroll
-      const sections = navLinks.map(link => link.href.substring(1));
+      const sections = navLinks.map((link) => link.href.substring(1));
       for (const section of sections.reverse()) {
         const el = document.getElementById(section);
         if (el) {
@@ -60,16 +60,16 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAdmin }) => {
 
   return (
     <>
-      <nav className={`navbar navbar-expand-lg fixed-top transition-all py-3 ${scrolled ? 'glass-nav shadow-sm' : 'bg-transparent'}`}>
-        <div className="container">
+      <nav className={`navbar fixed-top transition-all py-2.5 ${scrolled ? 'glass-nav shadow-sm' : 'bg-transparent'}`}>
+        <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
           {/* Logo */}
-          <a className="navbar-brand fw-bold fs-4 d-flex align-items-center gap-2" href="#hero">
+          <a className="navbar-brand fw-bold fs-5 d-flex align-items-center gap-1 text-decoration-none m-0" href="#hero">
             <span className="text-primary font-monospace">&lt;</span>
-            <span>{logoText}</span>
+            <span className="text-body">{logoText}</span>
             <span className="text-primary font-monospace">/&gt;</span>
           </a>
 
-          {/* Desktop Nav Actions */}
+          {/* Mobile Nav Toggle */}
           <div className="d-flex align-items-center gap-2 d-lg-none">
             <button className="btn btn-link text-body p-2" onClick={toggleDarkMode} title="Toggle Theme">
               {darkMode ? <Sun size={20} className="text-warning" /> : <Moon size={20} className="text-primary" />}
@@ -80,15 +80,15 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAdmin }) => {
           </div>
 
           {/* Horizontal Desktop Navbar */}
-          <div className="collapse navbar-collapse d-none d-lg-flex justify-content-center">
-            <ul className="navbar-nav gap-1">
+          <div className="d-none d-lg-flex align-items-center justify-content-center mx-2">
+            <ul className="navbar-nav d-flex flex-row flex-wrap gap-1 m-0 p-0 list-unstyled">
               {navLinks.map((link) => {
                 const sectionId = link.href.substring(1);
                 const isActive = activeSection === sectionId;
                 return (
                   <li className="nav-item" key={link.name}>
                     <a
-                      className={`nav-link px-3 py-2 rounded-pill fw-medium transition-all ${
+                      className={`nav-link px-2.5 py-1 rounded-pill small fw-medium transition-all text-decoration-none ${
                         isActive ? 'bg-primary text-white shadow-sm' : 'text-body hover-primary'
                       }`}
                       href={link.href}
@@ -102,21 +102,21 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAdmin }) => {
           </div>
 
           {/* Right Action Buttons */}
-          <div className="d-none d-lg-flex align-items-center gap-3">
-            <button className="btn btn-link text-body p-2 border-0" onClick={toggleDarkMode} title="Toggle Dark/Light Mode">
-              {darkMode ? <Sun size={22} className="text-warning" /> : <Moon size={22} className="text-primary" />}
+          <div className="d-none d-lg-flex align-items-center gap-2">
+            <button className="btn btn-link text-body p-1.5 border-0" onClick={toggleDarkMode} title="Toggle Dark/Light Mode">
+              {darkMode ? <Sun size={20} className="text-warning" /> : <Moon size={20} className="text-primary" />}
             </button>
 
             <button className="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1" onClick={() => setQrModalOpen(true)} title="Portfolio QR Code">
-              <QrCode size={16} />
+              <QrCode size={15} />
             </button>
 
             <button className="btn btn-sm btn-outline-primary d-flex align-items-center gap-1" onClick={onOpenAdmin} title="Admin Portal">
-              <Shield size={16} /> Admin
+              <Shield size={15} /> Admin
             </button>
 
             <a href={resumeUrl} target="_blank" rel="noopener noreferrer" className="btn btn-sm btn-primary d-flex align-items-center gap-1 shadow-sm">
-              <Download size={16} /> Resume
+              <Download size={15} /> Resume
             </a>
           </div>
         </div>
