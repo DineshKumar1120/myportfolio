@@ -4,7 +4,8 @@ const connectDB = async () => {
   const connUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/portfolio_db';
   try {
     const conn = await mongoose.connect(connUri, {
-      serverSelectionTimeoutMS: 10000,
+      serverSelectionTimeoutMS: 15000,
+      family: 4, // Force IPv4 DNS resolution for cloud servers (Render)
     });
     console.log(`[Database] MongoDB Connected: ${conn.connection.host}`);
     return true;
