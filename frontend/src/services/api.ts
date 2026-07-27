@@ -2,11 +2,15 @@ import axios from 'axios';
 import { PublicPortfolioData } from '../types';
 
 // Dynamic API URL detection: Uses local backend on localhost, or environment / cloud URL in production
+const isLocal =
+  typeof window !== 'undefined' &&
+  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+
 const API_BASE_URL =
   import.meta.env.VITE_API_URL ||
-  (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+  (isLocal
     ? 'http://localhost:5001/api'
-    : 'http://localhost:5001/api');
+    : 'https://portfolio-backend.onrender.com/api');
 
 const api = axios.create({
   baseURL: API_BASE_URL,
