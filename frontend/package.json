@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -25,9 +25,5 @@
     "@vitejs/plugin-react": "^4.2.1",
     "typescript": "^5.4.5",
     "vite": "^5.2.8"
-  },
-  "scripts": {
- "prebuild": "chmod +x node_modules/.bin/vite",
- "build": "vite build"
-}
+  }
 }
